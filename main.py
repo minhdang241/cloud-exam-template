@@ -1,9 +1,12 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, Request
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from sqlalchemy.orm import Session
 
 from config import settings
+from utils import get_db
 
 
 def get_application() -> FastAPI:
@@ -35,9 +38,9 @@ def add(a: int, b: int) -> int:
     return a + b
 
 
-# @app.get_singer("/singers/{id}", response_class=HTMLResponse)
-# def get_singers(request: Request, id: int, db_session: Session = Depends(get_db)):
-# return templates.TemplateResponse("singer.html", {"request": request, "id": id})
+@app.get("/singers/{id}", response_class=HTMLResponse)
+def get_singer_by_id(request: Request, id: int, db_session: Session = Depends(get_db)):
+    return templates.TemplateResponse("singer.html", {"request": request, "id": id})
 
 
 if __name__ == "__main__":
