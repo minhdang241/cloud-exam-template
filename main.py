@@ -54,7 +54,7 @@ def get_edit_singer_form(request: Request, id: int, db_session: Session = Depend
 def edit_singer(id: int,
                 name: str = Form(...), nick_name: str = Form(...), # EDIT FIELD HERE ###
                 db_session: Session = Depends(get_db)):
-    update_obj = crud_singer.SingerCreate(
+    update_obj = crud_singer.SingerUpdate(
         name=name,
         nick_name=nick_name,
         birthday="Na",
