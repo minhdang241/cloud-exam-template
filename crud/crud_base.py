@@ -7,8 +7,7 @@ from pydantic import BaseModel
 from sqlalchemy import asc, desc
 from sqlalchemy.orm import Session
 
-from app.db.errors import EntityDoesNotExist
-from app.db.postgres.base_class import PostgresBase
+from db.postgres.base_class import PostgresBase
 
 ModelType = TypeVar("ModelType", bound=PostgresBase)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -27,6 +26,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             query = db.query(*[getattr(self.model, key) for key in fields])
         else:
             query = db.query(self.model)
+        query = query.order_by(asc(self.model.id))
         return paginate(query, paging_params) if paging_params else query.all()
 
     def get_field_by_id(self, db: Session, id: Any, paging_params: Params = None, fields: List[str] = None):
@@ -38,8 +38,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
     def get_by_id(self, db: Session, id: Any) -> Optional[ModelType]:
         obj = db.query(self.model).filter(self.model.id == id).first()
-        if not obj:
-            raise EntityDoesNotExist("{0} with id {1} does not exist".format(self.model.__name__, id))
         return obj
 
     def filter_by(self, db: Session, order_desc=True, paging_params: Params = None, **kwargs) -> Union[Page, List]:

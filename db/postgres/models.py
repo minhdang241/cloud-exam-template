@@ -9,7 +9,7 @@ class Singer(Base):
     nick_name = Column(String)
     birthday = Column(String)
     address = Column(String)
-    songs = relationship("Song", cascade="delete", bacref="singer")
+    songs = relationship("Song", cascade="delete", backref="singer")
 
 
 class Song(Base):
