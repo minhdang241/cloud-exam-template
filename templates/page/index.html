@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block body %}
+
+{# UPDATE #}
+{% if singer %}
+<div class="row">
+    <div class="offset-sm-2 col-sm-8">
+        <h2>Update {{singer.id}}: {{singer.name}}</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="offset-sm-2 col-sm-8">
+        <form method="post" action="/singers/{{ singer.id }}/edit">
+            <div class="form-group" style="margin-top: 10px">
+                <label for="name">Name</label>
+                <input class="form-control" id="name" type="text" name="name" placeholder="name" value="{{ singer.name }}" required />
+            </div>
+            <div class="form-group" style="margin-top: 10px">
+                <label for="nick_name">Nickname</label>
+                <input class="form-control" id="nick_name" type="text" name="nick_name" placeholder="nick_name" value="{{ singer.nick_name }}" required />
+            </div>
+            <button class="btn btn-primary submit-btn" style="margin-top: 30px" type="submit">
+                Update
+            </button>
+        </form>
+    </div>
+</div>
+
+{# CREATE #}
+{% else %}
+
+<div class="row">
+    <div class="offset-sm-2 col-sm-8">
+        <h2>Create new</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="offset-sm-2 col-sm-8">
+        <form method="post">
+            <div class="form-group" style="margin-top: 10px">
+                <label for="name">Name</label>
+                <input class="form-control" id="name" type="text" name="name" placeholder="name" required />
+            </div>
+            <div class="form-group" style="margin-top: 10px">
+                <label for="nick_name">Nickname</label>
+                <input class="form-control" id="nick_name" type="text" name="nick_name" placeholder="nick_name" required />
+            </div>
+            <button class="btn btn-primary submit-btn" style="margin-top: 30px" type="submit">
+                Create
+            </button>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+<div class="row mt-5">
+    <div class="offset-sm-2 col-sm-8">
+        <h2 class="your-posts">Listing</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Nickname</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for singer in singers %}
+                <tr>
+                    <td>{{singer.id}}</td>
+                    <td>{{singer.name}}</td>
+                    <td>{{singer.nick_name}}</td>
+                    <td>
+                        <form class="hidden" method="get" action="/singers/{{ singer.id }}/edit">
+                            <button class="btn btn-outline-primary btn-sm" style="margin-right: 5px">
+                                Edit
+                            </button>
+                        </form>
+                        <form class="hidden" method="post" action="/singers/{{ singer.id }}/delete">
+                            <button class="btn btn-outline-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
