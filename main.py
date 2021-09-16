@@ -38,10 +38,10 @@ def add(a: int, b: int) -> int:
     return a + b
 
 
-@app.get("/singers/{id}", response_class=HTMLResponse)
-def get_singer_by_id(request: Request, id: int, db_session: Session = Depends(get_db)):
-    return templates.TemplateResponse("singer.html", {"request": request, "id": id})
-
+#@app.get("/singers/{id}", response_class=HTMLResponse)
+#def get_singer_by_id(request: Request, id: int, db_session: Session = Depends(get_db)):
+#    return templates.TemplateResponse("singer.html", {"request": request, "id": id})
+#
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", reload=True)
